@@ -1,0 +1,41 @@
+#! /usr/bin/env python2.7
+
+"""
+This python script is a really quick, ugly, dirty set of hacks to print out as much information as
+possible with the least amount of work.
+
+All this really does is grab a path from the command line, and create a TorrentParser object with
+that path, then calls all the methods (except for __init__()) of the object with their default
+arguments if they have any.
+
+Ideally, we would build something using the unittest module to check inputs and ouputs of each
+function and method contained in the torrentparse module and submodules, but since this probably
+isn't going to see the light of day, we don't have to worry about it (but that can be fixed if it
+does!)
+"""
+
+import argparse
+import inspect
+
+from torrentparse import TorrentParser
+
+parser = argparse.ArgumentParser(description="Parse a torrent metadata file and spit out some information about it")
+parser.add_argument('torrent', metavar="filename", type=str, nargs=1)
+args = parser.parse_args()
+
+print "Torrent file supplied: " + args.torrent[0] + "\n"
+tp = TorrentParser(args.torrent[0])
+
+method_list = []
+
+for i in inspect.getmembers(tp):
+	if inspect.ismethod(i[1]) and (i[0] is not "__init__"):
+		""" we should be fine using default arguments, there's only one method that actually takes
+		an argument (besides the init method), and it's got a reasonable defualt"""
+		print "output of: TorrentParser." + i[0] + "():"
+		try:
+			print i[1]()
+		except Exception as e:
+			print e
+		print "==================================================================================\n"
+
