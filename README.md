@@ -1,4 +1,4 @@
-Author: Aaron Cripps
+Author: Ch4ni
 Date: 2012, March 10
 
 This is the simple python task I was asked to complete for a job interview
